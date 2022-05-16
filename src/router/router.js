@@ -14,21 +14,26 @@ export default new VueRouter({
       path: '/home',
       component: Home,
       alias: "/",
+      meta: {showFooter: true},
     },
     {
       name: 'login',
       path: '/login',
       component: Login,
+      meta: {showFooter: false},
     },
     {
       name: 'search',
-      path: '/search',
+      path: '/search/:keyword',
       component: Search,
+      meta: {showFooter: true},
+
     },
     {
       name: 'register',
       path: '/register',
       component: Register,
+      meta: {showFooter: false},
     },
   ]
 })
