@@ -2,7 +2,7 @@
   <!-- 商品分类导航 -->
   <div class="type-nav">
     <div class="container">
-      <h2 class="all">全部商品分类</h2>
+      <h2 class="all" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">全部商品分类</h2>
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -13,29 +13,34 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
-        <div class="all-sort-list2">
-          <div class="item " v-for="(item) in categoryList" :key="item.categoryId">
-            <h3>
-              <a href="">{{ item.categoryName }}</a>
-            </h3>
-            <div class="item-list clearfix">
-              <div class="subitem" v-for="child in item.categoryChild" :key="child.categoryId">
-                <dl class="fore">
-                  <dt>
-                    <a href="">{{ child.categoryName }}</a>
-                  </dt>
-                  <dd>
-                    <em v-for="last in child.categoryChild" :key="last.categoryId">
-                      <a href="">{{ last.categoryName }}</a>
-                    </em>
-                  </dd>
-                </dl>
+      <transition name="sort">
+        <div class="sort" v-show="show">
+          <div class="all-sort-list2" @click.prevent="handleGoSearch">
+            <div class="item " v-for="(item) in categoryList" :key="item.categoryId">
+              <h3>
+                <a href="" data-category :data-category-name="item.categoryName"
+                   :data-category-id="item.categoryId">{{ item.categoryName }}</a>
+              </h3>
+              <div class="item-list clearfix">
+                <div class="subitem" v-for="child in item.categoryChild" :key="child.categoryId">
+                  <dl class="fore">
+                    <dt>
+                      <a href="" data-category :data-category-name="child.categoryName"
+                         :data-category-id="child.categoryId">{{ child.categoryName }}</a>
+                    </dt>
+                    <dd>
+                      <em v-for="last in child.categoryChild" :key="last.categoryId">
+                        <a href="" data-category :data-category-name="last.categoryName"
+                           :data-category-id="last.categoryId">{{ last.categoryName }}</a>
+                      </em>
+                    </dd>
+                  </dl>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -45,17 +50,38 @@ import {mapState} from "vuex";
 
 export default {
   name: "TypeNav",
-  created() {
-    this.$store.dispatch("getCategory")
+  props: {
+    show: {
+      type: Boolean,
+      default: true
+    },
   },
   computed: {
     ...mapState({
       categoryList: (state) => state.home.categoryList,
     })
   },
-  mounted() {
-    console.log(this.$store.state.categoryList)
-  }
+  methods: {
+    handleGoSearch(ev) {
+      if (ev.target.tagName === 'A') {
+        const {categoryName, categoryId} = ev.target.dataset
+        console.log(categoryName, categoryId)
+        this.$router.push({
+          name: 'search',
+          query: {
+            categoryName: categoryName,
+            categoryId: categoryId,
+          }
+        })
+      }
+    },
+    handleMouseEnter() {
+      this.$emit('mouseEnter')
+    },
+    handleMouseLeave() {
+      this.$emit('mouseLeave')
+    },
+  },
 }
 </script>
 
@@ -170,12 +196,26 @@ export default {
           }
 
           &:hover {
+            background: skyblue;
+
             .item-list {
               display: block;
             }
           }
         }
       }
+    }
+
+    .sort-enter {
+      height: 0;
+    }
+
+    .sort-leave {
+      height: 461px;
+    }
+
+    .sort-enter-active {
+      transition: height 0.5s;
     }
   }
 }

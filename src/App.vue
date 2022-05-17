@@ -16,7 +16,10 @@ export default {
   components: {
     Footer,
     Header
-  }
+  },
+  created() {
+    this.$store.dispatch("getCategory")
+  },
 }
 </script>
 

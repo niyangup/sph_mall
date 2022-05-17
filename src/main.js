@@ -6,9 +6,7 @@ import store from './store'
 
 Vue.config.productionTip = false
 Vue.component(TypeNav.name, TypeNav)
-
 new Vue({
   render: h => h(App),
-  store,
-  router
+  store, router
 }).$mount('#app')

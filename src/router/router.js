@@ -1,9 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "@/pages/Home/Home";
-import Login from "@/pages/Login/Login";
-import Search from "@/pages/Search/Search";
-import Register from "@/pages/Register/Register";
+import Home from "@/views/Home/Home";
+import Login from "@/views/Login/Login";
+import Search from "@/views/Search/Search";
+import Register from "@/views/Register/Register";
 
 Vue.use(VueRouter)
 
