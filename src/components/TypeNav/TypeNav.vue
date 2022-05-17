@@ -19,19 +19,19 @@
             <div class="item " v-for="(item) in categoryList" :key="item.categoryId">
               <h3>
                 <a href="" data-category :data-category-name="item.categoryName"
-                   :data-category-id="item.categoryId">{{ item.categoryName }}</a>
+                   :data-category-id="item.categoryId" data-categyry-id-type="category1Id">{{ item.categoryName }}</a>
               </h3>
               <div class="item-list clearfix">
                 <div class="subitem" v-for="child in item.categoryChild" :key="child.categoryId">
                   <dl class="fore">
                     <dt>
-                      <a href="" data-category :data-category-name="child.categoryName"
+                      <a href="" data-category data-categyry-id-type="category2Id" :data-category-name="child.categoryName"
                          :data-category-id="child.categoryId">{{ child.categoryName }}</a>
                     </dt>
                     <dd>
                       <em v-for="last in child.categoryChild" :key="last.categoryId">
                         <a href="" data-category :data-category-name="last.categoryName"
-                           :data-category-id="last.categoryId">{{ last.categoryName }}</a>
+                           :data-category-id="last.categoryId" data-categyry-id-type="category3Id">{{ last.categoryName }}</a>
                       </em>
                     </dd>
                   </dl>
@@ -64,14 +64,14 @@ export default {
   methods: {
     handleGoSearch(ev) {
       if (ev.target.tagName === 'A') {
-        const {categoryName, categoryId} = ev.target.dataset
-        console.log(categoryName, categoryId)
+        const {categoryName, categoryId, categoryIdType} = ev.target.dataset
+        console.log(categoryName, categoryId, categoryIdType)
+        const query = {}
+        query[categoryIdType] = categoryId
+        query.categoryId = categoryId
         this.$router.push({
           name: 'search',
-          query: {
-            categoryName: categoryName,
-            categoryId: categoryId,
-          }
+          query
         })
       }
     },

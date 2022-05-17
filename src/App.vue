@@ -19,6 +19,7 @@ export default {
   },
   created() {
     this.$store.dispatch("getCategory")
+    this.$store.dispatch("getBannerList")
   },
 }
 </script>
