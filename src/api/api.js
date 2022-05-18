@@ -14,3 +14,8 @@ export function getBannerList() {
 export function getFloorList() {
   return mockRequest.get('/floor')
 }
+
+
+export function getSearchInfo(params = {}) {
+  return request.post('/list', params,)
+}
