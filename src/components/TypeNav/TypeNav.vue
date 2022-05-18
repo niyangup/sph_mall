@@ -1,8 +1,8 @@
 <template>
   <!-- 商品分类导航 -->
-  <div class="type-nav">
+  <div class="type-nav" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
     <div class="container">
-      <h2 class="all" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">全部商品分类</h2>
+      <h2 class="all" >全部商品分类</h2>
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -15,23 +15,20 @@
       </nav>
       <transition name="sort">
         <div class="sort" v-show="show">
-          <div class="all-sort-list2" @click.prevent="handleGoSearch">
+          <div class="all-sort-list2">
             <div class="item " v-for="(item) in categoryList" :key="item.categoryId">
               <h3>
-                <a href="" data-category :data-category-name="item.categoryName"
-                   :data-category-id="item.categoryId" data-categyry-id-type="category1Id">{{ item.categoryName }}</a>
+                <a href="" @click.prevent="handleGoSearch('category1Id',item)">{{ item.categoryName }}</a>
               </h3>
               <div class="item-list clearfix">
                 <div class="subitem" v-for="child in item.categoryChild" :key="child.categoryId">
                   <dl class="fore">
                     <dt>
-                      <a href="" data-category data-categyry-id-type="category2Id" :data-category-name="child.categoryName"
-                         :data-category-id="child.categoryId">{{ child.categoryName }}</a>
+                      <a @click.prevent="handleGoSearch('category2Id',child)">{{ child.categoryName }}</a>
                     </dt>
                     <dd>
                       <em v-for="last in child.categoryChild" :key="last.categoryId">
-                        <a href="" data-category :data-category-name="last.categoryName"
-                           :data-category-id="last.categoryId" data-categyry-id-type="category3Id">{{ last.categoryName }}</a>
+                        <a @click.prevent="handleGoSearch('category3Id',last)">{{ last.categoryName }}</a>
                       </em>
                     </dd>
                   </dl>
@@ -62,18 +59,17 @@ export default {
     })
   },
   methods: {
-    handleGoSearch(ev) {
-      if (ev.target.tagName === 'A') {
-        const {categoryName, categoryId, categoryIdType} = ev.target.dataset
-        console.log(categoryName, categoryId, categoryIdType)
-        const query = {}
-        query[categoryIdType] = categoryId
-        query.categoryId = categoryId
-        this.$router.push({
-          name: 'search',
-          query
-        })
-      }
+    handleGoSearch(type, {categoryName, categoryId}) {
+      const query = {}
+      query.categoryName = categoryName
+      query[type] = categoryId
+      this.$router.push({
+        name: 'search',
+        query,
+        params: {
+          keyword: this.$route.params.keyword || "undefined",
+        },
+      })
     },
     handleMouseEnter() {
       this.$emit('mouseEnter')
