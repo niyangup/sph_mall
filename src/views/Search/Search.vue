@@ -140,6 +140,26 @@ export default {
   data() {
     return {
       show: false,
+      searchParams: {
+        //产品相应的id
+        category1Id: "",
+        category2Id: "",
+        category3Id: "",
+        //产品的名字
+        categoryName: "",
+        //搜索的关键字
+        keyword: "",
+        //排序:初始状态应该是综合且降序
+        order: "1:desc",
+        //第几页
+        pageNo: 1,
+        //每一页展示条数
+        pageSize: 3,
+        //平台属性的操作
+        props: [],
+        //品牌
+        trademark: "",
+      },
     }
   },
   computed: {
@@ -151,11 +171,19 @@ export default {
     },
     handleMouseLeave() {
       this.show = false
+    },
+    fetchData() {
+      this.$store.dispatch("getSearchList")
     }
   },
   created() {
-    this.$store.dispatch("getSearchList")
-  }
+    this.fetchData()
+  },
+  watch: {
+    $route() {
+      this.fetchData()
+    }
+  },
 }
 </script>
 
