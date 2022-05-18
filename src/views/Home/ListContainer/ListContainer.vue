@@ -4,7 +4,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
+        <div class="swiper-container" ref="mySwiper">
           <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="item in bannerList" :key="item.id">
               <img :src="item.imgUrl"/>
@@ -124,7 +124,7 @@ export default {
   },
   methods: {
     handleSwiper() {
-      new Swiper(".swiper-container", {
+      new Swiper(this.$refs.mySwiper, {
         loop: true,
         // 如果需要分页器
         pagination: {

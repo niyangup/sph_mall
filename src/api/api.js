@@ -10,3 +10,7 @@ export function getCategoryList() {
 export function getBannerList() {
   return mockRequest.get('/banner')
 }
+
+export function getFloorList() {
+  return mockRequest.get('/floor')
+}

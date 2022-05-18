@@ -2,8 +2,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@/views/Home/Home";
 import Login from "@/views/Login/Login";
-import Search from "@/views/Search/Search";
 import Register from "@/views/Register/Register";
+import Search from "@/views/Search/Search";
 
 Vue.use(VueRouter)
 
