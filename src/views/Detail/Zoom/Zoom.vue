@@ -1,7 +1,7 @@
 <template>
   <div class="spec-preview" v-if="skuImageList">
     <img :src="skuImageList[selectImgIndex].imgUrl"/>
-    <div class="event"></div>
+    <div class="event" @mousemove="handleMouseMove"></div>
     <div class="big">
       <img :src="skuImageList[selectImgIndex].imgUrl"/>
     </div>
@@ -13,6 +13,33 @@
 export default {
   name: "Zoom",
   props: ['skuImageList', 'selectImgIndex'],
+  methods: {
+    handleMouseMove(e) {
+      const {offsetX, offsetY} = e
+      const mask = document.querySelector('.mask')
+      const big = document.querySelector('.big>img')
+      const maxOffsetX = mask.offsetParent.clientWidth - mask.clientWidth / 2
+      const maxOffsetY = mask.offsetParent.clientHeight - mask.clientHeight / 2
+      let left = offsetX - mask.clientWidth / 2
+      let top = offsetY - mask.clientHeight / 2
+      if (top <= 0) {
+        top = 0
+      }
+      if (left <= 0) {
+        left = 0
+      }
+      if (offsetX >= maxOffsetX) {
+        left = maxOffsetX - mask.clientWidth / 2
+      }
+      if (offsetY >= maxOffsetY) {
+        top = maxOffsetY - mask.clientHeight / 2
+      }
+      mask.style.left = left + "px"
+      mask.style.top = top + "px"
+      big.style.left = -2 * left + "px"
+      big.style.top = -2 * top + "px"
+    }
+  },
 }
 </script>
 

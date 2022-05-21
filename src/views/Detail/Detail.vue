@@ -15,7 +15,8 @@
           <!--放大镜效果-->
           <Zoom :skuImageList="skuInfo.skuImageList" :selectImgIndex="selectImgIndex"/>
           <!-- 小图列表 -->
-          <ImageList :skuImageList="skuInfo.skuImageList" @clickChange="handleClickChange" :selectImgIndex="selectImgIndex"/>
+          <ImageList :skuImageList="skuInfo.skuImageList" @clickChange="handleClickChange"
+                     :selectImgIndex="selectImgIndex"/>
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
@@ -74,9 +75,9 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model.number="proNum" @change="handleNumChange">
+                <a href="javascript:" class="plus" @click="handleAdjustNum('plus')">+</a>
+                <a href="javascript:" class="mins" @click="handleAdjustNum('reduce')">-</a>
               </div>
               <div class="add">
                 <a href="javascript:">加入购物车</a>
@@ -350,6 +351,7 @@ export default {
   data() {
     return {
       selectImgIndex: 0,
+      proNum: 1,
     }
   },
   methods: {
@@ -361,6 +363,23 @@ export default {
         value.isChecked = "0"
       })
       item.isChecked = "1"
+    },
+    handleAdjustNum(type) {
+      if (type === 'plus') {
+        this.proNum++
+      } else {
+        if (this.proNum > 1) {
+          this.proNum--
+        }
+      }
+    },
+    handleNumChange(ev) {
+      let value = parseInt(ev.target.value) || 1
+      if (value >= 1) {
+        this.proNum = value
+      } else {
+        this.proNum = 1
+      }
     }
   },
 }
