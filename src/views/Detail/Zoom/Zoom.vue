@@ -1,9 +1,9 @@
 <template>
-  <div class="spec-preview">
-    <img src="../images/s1.png"/>
+  <div class="spec-preview" v-if="skuImageList">
+    <img :src="skuImageList[selectImgIndex].imgUrl"/>
     <div class="event"></div>
     <div class="big">
-      <img src="../images/s1.png"/>
+      <img :src="skuImageList[selectImgIndex].imgUrl"/>
     </div>
     <div class="mask"></div>
   </div>
@@ -12,6 +12,7 @@
 <script>
 export default {
   name: "Zoom",
+  props: ['skuImageList', 'selectImgIndex'],
 }
 </script>
 

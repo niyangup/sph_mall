@@ -13,21 +13,21 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom/>
+          <Zoom :skuImageList="skuInfo.skuImageList" :selectImgIndex="selectImgIndex"/>
           <!-- 小图列表 -->
-          <ImageList/>
+          <ImageList :skuImageList="skuInfo.skuImageList" @clickChange="handleClickChange" :selectImgIndex="selectImgIndex"/>
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
           <div class="goodsDetail">
-            <h3 class="InfoName">Apple iPhone 6s（A1700）64G玫瑰金色 移动通信电信4G手机</h3>
-            <p class="news">推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返</p>
+            <h3 class="InfoName">{{ skuInfo.skuName || "Apple iPhone 6s（A1700）64G玫瑰金色 移动通信电信4G手机" }}</h3>
+            <p class="news">{{ skuInfo.skuDesc || "推荐选择下方[移动优惠购], 手机套餐齐搞定, 不用换号, 每月还有花费返" }}</p>
             <div class="priceArea">
               <div class="priceArea1">
                 <div class="title">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</div>
                 <div class="price">
-                  <i>¥</i>
-                  <em>5299</em>
+                  <i>¥ </i>
+                  <em>{{ skuInfo.price || "5299" }}</em>
                   <span>降价通知</span>
                 </div>
                 <div class="remark">
@@ -60,29 +60,16 @@
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
-              <dl>
-                <dt class="title">选择颜色</dt>
-                <dd changepirce="0" class="active">金色</dd>
-                <dd changepirce="40">银色</dd>
-                <dd changepirce="90">黑色</dd>
-              </dl>
-              <dl>
-                <dt class="title">内存容量</dt>
-                <dd changepirce="0" class="active">16G</dd>
-                <dd changepirce="300">64G</dd>
-                <dd changepirce="900">128G</dd>
-                <dd changepirce="1300">256G</dd>
-              </dl>
-              <dl>
-                <dt class="title">选择版本</dt>
-                <dd changepirce="0" class="active">公开版</dd>
-                <dd changepirce="-1000">移动版</dd>
-              </dl>
-              <dl>
-                <dt class="title">购买方式</dt>
-                <dd changepirce="0" class="active">官方标配</dd>
-                <dd changepirce="-240">优惠移动版</dd>
-                <dd changepirce="-390">电信优惠版</dd>
+              <dl v-for="item in spuSaleAttrList" :key="item.id">
+                <dt class="title">{{ item.saleAttrName }}</dt>
+                <dd changepirce="0"
+                    :class="{active:subItem.isChecked==='1'}"
+                    v-for="subItem in item.spuSaleAttrValueList"
+                    :key="subItem.id"
+                    @click="handleClickSaleItem(subItem,item.spuSaleAttrValueList)"
+                >
+                  {{ subItem.saleAttrValueName }}
+                </dd>
               </dl>
             </div>
             <div class="cartWrap">
@@ -358,7 +345,23 @@ export default {
     this.$store.dispatch('getProInfo', id)
   },
   computed: {
-    ...mapGetters(['categoryView', "skuInfo"])
+    ...mapGetters(['categoryView', "skuInfo", "spuSaleAttrList"])
+  },
+  data() {
+    return {
+      selectImgIndex: 0,
+    }
+  },
+  methods: {
+    handleClickChange(index) {
+      this.selectImgIndex = index
+    },
+    handleClickSaleItem(item, array) {
+      array.forEach(value => {
+        value.isChecked = "0"
+      })
+      item.isChecked = "1"
+    }
   },
 }
 </script>

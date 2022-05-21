@@ -1,8 +1,12 @@
 <template>
-  <div class="swiper-container">
+  <div class="swiper-container" ref="imgList">
     <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <img src="../images/s1.png">
+      <div class="swiper-slide"
+           v-for="(item,index) in skuImageList"
+           :key="item.id"
+           @click="handleClick(index)"
+      >
+        <img :src="item.imgUrl" :class="{active:index===selectImgIndex}">
       </div>
     </div>
     <div class="swiper-button-next"></div>
@@ -12,8 +16,34 @@
 
 <script>
 
+import Swiper from "swiper";
+
 export default {
   name: "ImageList",
+  props: ['skuImageList', 'selectImgIndex'],
+  methods: {
+    handleClick(index) {
+      this.$emit('clickChange', index)
+    },
+    handleSwiper() {
+      new Swiper(this.$refs.imgList, {
+        // 如果需要前进后退按钮
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        slidesPerView: 3,
+        slidesPerGroup: 1,
+      });
+    },
+  },
+  watch: {
+    skuImageList() {
+      this.$nextTick(() => {
+        this.handleSwiper()
+      })
+    }
+  },
 }
 </script>
 
