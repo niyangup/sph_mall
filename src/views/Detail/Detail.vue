@@ -4,10 +4,9 @@
     <section class="con">
       <!-- 导航路径区域 -->
       <div class="conPoin">
-        <span>手机、数码、通讯</span>
-        <span>手机</span>
-        <span>Apple苹果</span>
-        <span>iphone 6S系类</span>
+        <span>{{ categoryView.category1Name }}</span>
+        <span>{{ categoryView.category2Name }}</span>
+        <span>{{ categoryView.category3Name }}</span>
       </div>
       <!-- 主要内容区域 -->
       <div class="mainCon">
@@ -346,12 +345,20 @@
 <script>
 import ImageList from './ImageList/ImageList'
 import Zoom from './Zoom/Zoom'
+import {mapGetters} from "vuex";
 
 export default {
   name: 'Detail',
   components: {
     ImageList,
     Zoom,
+  },
+  created() {
+    const id = this.$route.params.skid
+    this.$store.dispatch('getProInfo', id)
+  },
+  computed: {
+    ...mapGetters(['categoryView', "skuInfo"])
   },
 }
 </script>
