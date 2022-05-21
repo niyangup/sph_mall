@@ -15,15 +15,35 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <!-- 分类的面包屑 -->
+            <li class="with-x" v-if="searchParams.categoryName">
+              {{
+                searchParams.categoryName
+              }}<i @click="removeCategoryName">×</i>
+            </li>
+            <!-- 关键字的面包屑 -->
+            <li class="with-x" v-if="searchParams.keyword">
+              {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
+            </li>
+            <!-- 品牌的面包屑 -->
+            <li class="with-x" v-if="searchParams.trademark">
+              {{
+                searchParams.trademark.split(":")[1]
+              }}<i @click="removeTradeMark">×</i>
+            </li>
+            <!--平台的售卖的属性值展示 -->
+            <li
+                class="with-x"
+                v-for="(attrValue, index) in searchParams.props"
+                :key="index"
+            >
+              {{ attrValue.split(":")[1] }}<i @click="removeAttr(index)">×</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector/>
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo"/>
 
         <!--details-->
         <div class="details clearfix">
@@ -173,8 +193,45 @@ export default {
       this.show = false
     },
     fetchData() {
-      this.$store.dispatch("getSearchList")
-    }
+      this.$store.dispatch("getSearchList", this.searchParams)
+    },
+    trademarkInfo(trademark) {
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`
+      this.fetchData()
+    },
+    removeTradeMark() {
+      this.searchParams.trademark = undefined;
+      this.fetchData()
+    },
+    removeAttr(index) {
+      this.searchParams.props.splice(index, 1)
+      this.fetchData()
+    },
+    attrInfo(attr, attrValue) {
+      let props = `${attr.attrId}:${attrValue}:${attr.attrName}`
+      if (this.searchParams.props.indexOf(props) === -1)
+        this.searchParams.props.push(props)
+      this.fetchData()
+    },
+
+    removeCategoryName() {
+      this.searchParams.categoryName = undefined
+      this.searchParams.category1Id = undefined
+      this.searchParams.category2Id = undefined
+      this.searchParams.category3Id = undefined
+      this.fetchData()
+      if (this.$route.params) {
+        this.$router.push({name: "search", params: this.$route.params});
+      }
+    },
+    removeKeyword() {
+      this.searchParams.keyword = undefined;
+      this.fetchData()
+      this.$bus.$emit("clear");
+      if (this.$route.query) {
+        this.$router.push({name: "search", query: this.$route.query});
+      }
+    },
   },
   created() {
     this.fetchData()
