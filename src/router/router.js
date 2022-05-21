@@ -4,6 +4,7 @@ import Home from "@/views/Home/Home";
 import Login from "@/views/Login/Login";
 import Register from "@/views/Register/Register";
 import Search from "@/views/Search/Search";
+import Detail from "@/views/Detail/Detail";
 
 Vue.use(VueRouter)
 
@@ -35,5 +36,13 @@ export default new VueRouter({
       component: Register,
       meta: {showFooter: false},
     },
-  ]
+    {
+      name: 'detail',
+      path: '/detail/:skid',
+      component: Detail,
+    },
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    return {y: 0}
+  }
 })
