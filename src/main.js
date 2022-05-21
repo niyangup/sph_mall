@@ -5,9 +5,11 @@ import TypeNav from "@/components/TypeNav/TypeNav";
 import store from './store'
 import '@/mock/mockServe'
 import 'swiper/css/swiper.min.css'
+import Pagination from "@/components/pagination/Pagination";
 
 Vue.config.productionTip = false
 Vue.component(TypeNav.name, TypeNav)
+Vue.component(Pagination.name, Pagination)
 new Vue({
   render: h => h(App),
   store, router,

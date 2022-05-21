@@ -50,23 +50,23 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: isOne }" @click="changeOrder('1')">
+                  <a
+                  >综合<span
+                      v-show="isOne"
+                      class="iconfont"
+                      :class="{ 'icon-UP': isAsc, 'icon-DOWN': isDesc }"
+                  ></span
+                  ></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: isTwo }" @click="changeOrder('2')">
+                  <a
+                  >价格<span
+                      v-show="isTwo"
+                      class="iconfont"
+                      :class="{ 'icon-UP': isAsc, 'icon-DOWN': isDesc }"
+                  ></span
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -103,35 +103,13 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination
+              :pageNo="searchParams.pageNo"
+              :pageSize="searchParams.pageSize"
+              :total="total"
+              :continues="5"
+              @pageChange="handlePageChange"
+          />
         </div>
       </div>
     </div>
@@ -140,13 +118,15 @@
 
 <script>
 
-import SearchSelector from "@/views/Search/SearchSelector/SearchSelector";
-import {mapGetters} from "vuex";
+import SearchSelector from "@/views/Search/SearchSelector/SearchSelector"
+import {mapGetters, mapState} from "vuex"
+import Pagination from "@/components/pagination/Pagination";
 
 export default {
   name: 'Search',
   components: {
-    SearchSelector
+    SearchSelector,
+    Pagination,
   },
   filters: {
     imgFilter: function (url) {
@@ -154,7 +134,7 @@ export default {
         return url
       }
       return "http://47.93.148.192:8080/group1/M00/04/85/rBHu8mIZ2juAY82RAACH5lfpStE153.jpg"
-      // return "./images/mobile01.png";
+      // return "./images/mobile01.png"
     }
   },
   data() {
@@ -183,9 +163,28 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['goodsList'])
+    ...mapGetters(['goodsList']),
+    ...mapState({
+      total: state => state.search.searchList.total,
+    }),
+    isOne() {
+      return this.searchParams.order.indexOf("1") !== -1
+    },
+    isTwo() {
+      return this.searchParams.order.indexOf("2") !== -1
+    },
+    isAsc() {
+      return this.searchParams.order.indexOf("asc") !== -1
+    },
+    isDesc() {
+      return this.searchParams.order.indexOf("desc") !== -1
+    },
   },
   methods: {
+    handlePageChange(newIndex) {
+      this.searchParams.pageNo = newIndex
+      this.fetchData()
+    },
     handleMouseEnter() {
       this.show = true
     },
@@ -200,7 +199,7 @@ export default {
       this.fetchData()
     },
     removeTradeMark() {
-      this.searchParams.trademark = undefined;
+      this.searchParams.trademark = undefined
       this.fetchData()
     },
     removeAttr(index) {
@@ -221,16 +220,29 @@ export default {
       this.searchParams.category3Id = undefined
       this.fetchData()
       if (this.$route.params) {
-        this.$router.push({name: "search", params: this.$route.params});
+        this.$router.push({name: "search", params: this.$route.params})
       }
     },
     removeKeyword() {
-      this.searchParams.keyword = undefined;
+      this.searchParams.keyword = undefined
       this.fetchData()
-      this.$bus.$emit("clear");
+      this.$bus.$emit("clear")
       if (this.$route.query) {
-        this.$router.push({name: "search", query: this.$route.query});
+        this.$router.push({name: "search", query: this.$route.query})
       }
+    },
+    changeOrder(flag) {
+      let originOrder = this.searchParams.order
+      let originFlag = originOrder.split(":")[0]
+      let originSort = originOrder.split(":")[1]
+      let newOrder = ""
+      if (flag === originFlag) {
+        newOrder = `${originFlag}:${originSort === "desc" ? "asc" : "desc"}`
+      } else {
+        newOrder = `${flag}:desc`
+      }
+      this.searchParams.order = newOrder
+      this.fetchData()
     },
   },
   created() {
@@ -245,6 +257,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '//at.alicdn.com/t/font_2758111_9hehey1sgko.css';
+
 .main {
   margin: 10px 0;
 
