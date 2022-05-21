@@ -7,8 +7,7 @@ const state = {
 }
 const mutations = {
   saveCategory(state, payload) {
-    state.categoryList = payload
-    state.categoryList.pop()
+    state.categoryList = payload.slice(0, 16)
   },
   saveBanner(state, payload) {
     state.bannerList = payload
