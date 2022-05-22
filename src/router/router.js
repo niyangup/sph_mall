@@ -11,6 +11,9 @@ import store from "@/store";
 import Trade from "@/views/Trade/Trade";
 import Pay from "@/views/Pay/Pay";
 import PaySuccess from "@/views/PaySuccess/PaySuccess";
+import Center from "@/views/Center/Center";
+import TheOrder from "@/views/Center/TheOrder/TheOrder";
+import GroupOrder from "@/views/Center/GroupOrder/GroupOrder";
 
 Vue.use(VueRouter)
 
@@ -71,6 +74,24 @@ const router = new VueRouter({
       name: 'paySuccess',
       path: '/paySuccess',
       component: PaySuccess,
+    },
+    {
+      name: 'center',
+      path: '/center',
+      component: Center,
+      redirect: {name: 'theOrder'},
+      children: [
+        {
+          name: 'theOrder',
+          path: 'theOrder',
+          component: TheOrder,
+        },
+        {
+          name: 'groupOrder',
+          path: 'groupOrder',
+          component: GroupOrder,
+        },
+      ]
     },
   ],
   scrollBehavior(to, from, savedPosition) {
