@@ -19,7 +19,7 @@
           >
             查看商品详情
           </router-link>
-          <a href="javascript:">去购物车结算 > </a>
+          <router-link :to="{name:'shopCart'}">去购物车结算 ></router-link>
         </div>
       </div>
     </div>
