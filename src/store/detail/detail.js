@@ -1,7 +1,9 @@
 import {addOrUpdateShopCart, getProductInfo} from "@/api/api";
+import {getUUID} from "@/utils/uuidTokenUtil";
 
 const state = {
-  proInfo: {}
+  proInfo: {},
+  uuid_token: getUUID()
 }
 const mutations = {
   saveProInfo(state, payload) {

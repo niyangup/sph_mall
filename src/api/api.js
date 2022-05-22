@@ -25,3 +25,15 @@ export function getProductInfo(proId) {
 export function addOrUpdateShopCart(skuId, skuNum) {
   return request({url: `/cart/addToCart/${skuId}/${skuNum}`, method: "post"})
 }
+
+/**
+ * 获取购物车列表
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export function getCartList() {
+  return request.get('/cart/cartList')
+}
+
+export function delCartFromListById(skuId) {
+  return request.delete(`/cart/deleteCart/${skuId}`)
+}
