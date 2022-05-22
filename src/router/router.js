@@ -9,6 +9,7 @@ import AddCartSuccess from "@/views/AddCartSuccess/AddCartSuccess";
 import ShopCart from "@/views/ShopCart/ShopCart";
 import store from "@/store";
 import Trade from "@/views/Trade/Trade";
+import Pay from "@/views/Pay/Pay";
 
 Vue.use(VueRouter)
 
@@ -59,6 +60,11 @@ const router = new VueRouter({
       name: 'trade',
       path: '/trade',
       component: Trade,
+    },
+    {
+      name: 'pay',
+      path: '/pay',
+      component: Pay,
     },
   ],
   scrollBehavior(to, from, savedPosition) {
