@@ -22,6 +22,6 @@ export function getProductInfo(proId) {
   return request.get(`/item/${proId}`)
 }
 
-export function addToCart(skuId, skuNum) {
+export function addOrUpdateShopCart(skuId, skuNum) {
   return request({url: `/cart/addToCart/${skuId}/${skuNum}`, method: "post"})
 }

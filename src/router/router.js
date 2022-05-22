@@ -5,6 +5,7 @@ import Login from "@/views/Login/Login";
 import Register from "@/views/Register/Register";
 import Search from "@/views/Search/Search";
 import Detail from "@/views/Detail/Detail";
+import AddCartSuccess from "@/views/AddCartSuccess/AddCartSuccess";
 
 Vue.use(VueRouter)
 
@@ -40,6 +41,11 @@ export default new VueRouter({
       name: 'detail',
       path: '/detail/:skid',
       component: Detail,
+    },
+    {
+      name: 'addCartSuccess',
+      path: '/addCartSuccess',
+      component: AddCartSuccess,
     },
   ],
   scrollBehavior(to, from, savedPosition) {

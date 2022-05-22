@@ -80,7 +80,7 @@
                 <a href="javascript:" class="mins" @click="handleAdjustNum('reduce')">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="handleAddToCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -379,6 +379,24 @@ export default {
         this.proNum = value
       } else {
         this.proNum = 1
+      }
+    },
+    async handleAddToCart() {
+      try {
+        await this.$store.dispatch('addOrUpdateShopCart', {
+          skuId: this.$route.params.skid,
+          skuNum: this.proNum,
+        })
+
+        sessionStorage.setItem('skuInfo', JSON.stringify({
+          skuInfo: this.skuInfo,
+          skuNum: this.proNum,
+        }))
+        await this.$router.push({
+          name: 'addCartSuccess',
+        })
+      } catch (e) {
+        console.log(e)
       }
     }
   },
