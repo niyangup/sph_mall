@@ -62,3 +62,7 @@ export function getUserinfo() {
 export function getUserAddress() {
   return request.get('/user/userAddress/auth/findUserAddressList')
 }
+
+export function getTrade() {
+  return request.get('/order/auth/trade')
+}
