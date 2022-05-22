@@ -7,8 +7,8 @@
           <span class="success-info">订单提交成功，请您及时付款，以便尽快为您发货~~</span>
         </h4>
         <div class="paymark">
-          <span class="fl">请您在提交订单<em class="orange time">4小时</em>之内完成支付，超时订单会自动取消。订单号：<em>145687</em></span>
-          <span class="fr"><em class="lead">应付金额：</em><em class="orange money">￥17,654</em></span>
+          <span class="fl">请您在提交订单<em class="orange time">4小时</em>之内完成支付，超时订单会自动取消。订单号：<em>{{ orderId }}</em></span>
+          <span class="fr"><em class="lead">应付金额：</em><em class="orange money">￥{{ orderInfo.totalFee }}</em></span>
         </div>
       </div>
       <div class="checkout-info">
@@ -65,7 +65,7 @@
         <div class="hr"></div>
 
         <div class="submit">
-          <router-link class="btn" to="/paysuccess">立即支付</router-link>
+          <a class="btn" @click="handleStartPay">立即支付</a>
         </div>
         <div class="otherpay">
           <div class="step-tit">
@@ -82,8 +82,50 @@
 </template>
 
 <script>
+import {getOrderInfo} from "@/api/api";
+import QRCode from 'qrcode'
+
 export default {
   name: 'Pay',
+  data() {
+    return {
+      orderInfo: {},
+    }
+  },
+  created() {
+    this.getOrderInfo()
+  },
+  methods: {
+    async getOrderInfo() {
+      const response = await getOrderInfo(this.orderId)
+      if (response.code === 200) {
+        this.orderInfo = response.data
+      }
+    },
+    async handleStartPay() {
+      const url = await QRCode.toDataURL('hello')
+      try {
+        await this.$alert(`<img src="${url}"/>`, 'HTML 片段', {
+          dangerouslyUseHTMLString: true,
+          center: true,
+          showClose: false,
+          cancelButtonText: '支付遇到问题',
+          showCancelButton: true,
+          confirmButtonText: "已支付成功",
+        });
+        await this.$router.push({
+          name: "paySuccess"
+        })
+      } catch (e) {
+        console.log(e)
+      }
+    },
+  },
+  computed: {
+    orderId() {
+      return this.$route.query.tradeId
+    },
+  },
 }
 </script>
 

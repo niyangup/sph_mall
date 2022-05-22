@@ -66,3 +66,11 @@ export function getUserAddress() {
 export function getTrade() {
   return request.get('/order/auth/trade')
 }
+
+export function postOrder(tradeNo, data) {
+  return request.post(`/order/auth/submitOrder?tradeNo=${tradeNo}`, data)
+}
+
+export function getOrderInfo(orderId) {
+  return request.get(`/payment/weixin/createNative/${orderId}`)
+}

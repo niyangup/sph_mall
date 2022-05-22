@@ -10,6 +10,7 @@ import ShopCart from "@/views/ShopCart/ShopCart";
 import store from "@/store";
 import Trade from "@/views/Trade/Trade";
 import Pay from "@/views/Pay/Pay";
+import PaySuccess from "@/views/PaySuccess/PaySuccess";
 
 Vue.use(VueRouter)
 
@@ -65,6 +66,11 @@ const router = new VueRouter({
       name: 'pay',
       path: '/pay',
       component: Pay,
+    },
+    {
+      name: 'paySuccess',
+      path: '/paySuccess',
+      component: PaySuccess,
     },
   ],
   scrollBehavior(to, from, savedPosition) {

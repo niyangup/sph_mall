@@ -86,13 +86,13 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a class="subBtn" :class="{disable:!selectAddress}" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
 
 <script>
-import {getTrade, getUserAddress} from "@/api/api";
+import {getTrade, getUserAddress, postOrder} from "@/api/api";
 
 export default {
   name: 'Trade',
@@ -109,6 +109,29 @@ export default {
       })
       addressItem.isDefault = "1"
     },
+    async submitOrder() {
+      let {tradeNo} = this.trade;
+      let data = {
+        consignee: this.selectAddress?.consignee || '', //最终收件人的名字
+        consigneeTel: this.selectAddress?.phoneNum || 123, //最终收件人的手机号
+        deliveryAddress: this.selectAddress?.fullAddress || "地址", //收件人的地址
+        paymentWay: "ONLINE", //支付方式
+        orderComment: this.msg, //买家的留言信息
+        orderDetailList: this.trade.detailArrayList, //商品清单
+      };
+      try {
+        const response = await postOrder(tradeNo, data)
+        if (response.code === 200) {
+          const tradeId = response.data
+          await this.$router.push({name: 'pay', query: {tradeId}})
+        } else {
+          console.log(response)
+        }
+      } catch (e) {
+        console.log(e.message)
+      }
+
+    }
   },
   computed: {
     selectAddress() {
@@ -373,7 +396,12 @@ export default {
       text-align: center;
       color: #fff;
       background-color: #e1251b;
+      cursor: pointer;
+    }
 
+    .disable {
+      cursor: not-allowed;
+      background: #8c8c8c;
     }
   }
 

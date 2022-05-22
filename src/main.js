@@ -6,10 +6,14 @@ import store from './store'
 import '@/mock/mockServe'
 import 'swiper/css/swiper.min.css'
 import Pagination from "@/components/pagination/Pagination";
+import {MessageBox} from "element-ui";
 
 Vue.config.productionTip = false
 Vue.component(TypeNav.name, TypeNav)
 Vue.component(Pagination.name, Pagination)
+
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
 new Vue({
   render: h => h(App),
   store, router,
