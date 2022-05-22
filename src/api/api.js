@@ -50,3 +50,11 @@ export function sendCode(phone) {
 export function registerUser(data) {
   return request.post('/user/passport/register', data)
 }
+
+export function login(data) {
+  return request.post('/user/passport/login', data)
+}
+
+export function getUserinfo() {
+  return request.get('/user/passport/auth/getUserInfo')
+}

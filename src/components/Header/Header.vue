@@ -6,10 +6,14 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="!$store.state.user.userinfo.name">
             <span>请</span>
             <router-link :to="{name:'login'}">登录</router-link>
             <router-link :to="{name:'register'}" class="register">免费注册</router-link>
+          </p>
+          <p v-else>
+            <span>{{$store.state.user.userinfo.name}}</span>
+            <router-link :to="{name:'register'}" class="register">退出登录</router-link>
           </p>
         </div>
         <div class="typeList">
