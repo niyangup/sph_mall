@@ -63,7 +63,7 @@ export default {
   name: 'Register',
   data() {
     return {
-      phone: "13011111111",
+      phone: "",
       code: "",
       pwd: "",
       confirmPwd: "",

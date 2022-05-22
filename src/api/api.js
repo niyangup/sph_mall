@@ -58,3 +58,7 @@ export function login(data) {
 export function getUserinfo() {
   return request.get('/user/passport/auth/getUserInfo')
 }
+
+export function getUserAddress() {
+  return request.get('/user/userAddress/auth/findUserAddressList')
+}

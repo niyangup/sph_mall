@@ -120,8 +120,22 @@
 </template>
 
 <script>
+import {getUserAddress} from "@/api/api";
+
 export default {
   name: 'Trade',
+  data() {
+    return {}
+  },
+  methods: {
+    getAddress() {
+
+    },
+  },
+  async created() {
+    const address = await getUserAddress()
+    console.log(address)
+  }
 }
 </script>
 
