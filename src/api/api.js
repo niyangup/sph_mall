@@ -37,3 +37,16 @@ export function getCartList() {
 export function delCartFromListById(skuId) {
   return request.delete(`/cart/deleteCart/${skuId}`)
 }
+
+/**
+ * 获取验证码
+ * @param phone
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export function sendCode(phone) {
+  return request.get(`/user/passport/sendCode/${phone}`)
+}
+
+export function registerUser(data) {
+  return request.post('/user/passport/register', data)
+}
