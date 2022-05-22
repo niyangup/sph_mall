@@ -74,3 +74,8 @@ export function postOrder(tradeNo, data) {
 export function getOrderInfo(orderId) {
   return request.get(`/payment/weixin/createNative/${orderId}`)
 }
+
+
+export function getUserCenterInfo(page, limit) {
+  return request.get(`/order/auth/${page}/${limit}`)
+}
