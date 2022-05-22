@@ -12,8 +12,8 @@
             <router-link :to="{name:'register'}" class="register">免费注册</router-link>
           </p>
           <p v-else>
-            <span>{{$store.state.user.userinfo.name}}</span>
-            <router-link :to="{name:'register'}" class="register">退出登录</router-link>
+            <span>{{ $store.state.user.userinfo.name }}</span>
+            <a class="register" @click="handleLogout">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -64,6 +64,10 @@ export default {
           ...this.$route.query,
         },
       })
+    },
+    handleLogout() {
+      this.$store.dispatch('logout')
+      this.$router.push({name: "home"})
     }
   },
 }

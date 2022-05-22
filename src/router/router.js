@@ -7,10 +7,11 @@ import Search from "@/views/Search/Search";
 import Detail from "@/views/Detail/Detail";
 import AddCartSuccess from "@/views/AddCartSuccess/AddCartSuccess";
 import ShopCart from "@/views/ShopCart/ShopCart";
+import store from "@/store";
 
 Vue.use(VueRouter)
 
-export default new VueRouter({
+const router = new VueRouter({
   routes: [
     {
       name: 'home',
@@ -58,3 +59,29 @@ export default new VueRouter({
     return {y: 0}
   }
 })
+
+router.beforeEach((to, from, next) => {
+  const token = store.state.user.token
+  const name = store.state.user.userinfo.name
+  if (token) {
+    if (to.name === 'login' || to.name === 'register') {
+      next({name: 'home'})
+    } else {
+      if (!name) {
+        store.dispatch("getUserinfo").then(() => {
+          next()
+        }, () => {
+          store.dispatch("logout").then()
+          next({name: 'login'})
+        })
+      } else {
+        next()
+      }
+
+    }
+  } else {
+    next()
+  }
+
+})
+export default router

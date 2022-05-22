@@ -1,19 +1,25 @@
 import {getUserinfo, login, registerUser} from "@/api/api";
+import {getToken, removeToken, setToken} from "@/utils/token";
 
 const state = {
-  token: '',
+  token: getToken(),
   userinfo: {},
 }
 const mutations = {
   saveToken(state, token) {
     state.token = token
+    setToken(token)
   },
   saveUserinfo(state, userinfo) {
     state.userinfo = userinfo
+  },
+  logout(state) {
+    removeToken()
+    state.userinfo = {}
+    state.token = null
   }
 }
 const actions = {
-
   async userRegister(context, user) {
     let result = await registerUser(user);
     console.log(result)
@@ -23,7 +29,6 @@ const actions = {
       throw new Error(result.message);
     }
   },
-
   async login(context, payload) {
     const data = await login(payload)
     if (data.code === 200) {
@@ -39,6 +44,9 @@ const actions = {
     } else {
       throw new Error(data.message)
     }
+  },
+  logout(context) {
+    context.commit('logout')
   }
 }
 const getters = {}
