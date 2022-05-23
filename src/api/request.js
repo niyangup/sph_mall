@@ -4,7 +4,7 @@ import 'nprogress/nprogress.css'
 import store from "@/store";
 
 const request = axios.create({
-  baseURL: "/api",
+  baseURL: "http://gmall-h5-api.atguigu.cn/api",
   timeout: 5000,
 })
 
