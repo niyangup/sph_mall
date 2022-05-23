@@ -259,7 +259,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '//at.alicdn.com/t/font_2758111_9hehey1sgko.css';
 
 .main {
   margin: 10px 0;
