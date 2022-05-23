@@ -84,7 +84,7 @@ export default {
         if (success) {
           await this.$store.dispatch('getUserinfo')
           await this.$router.push({
-            name: 'home'
+            name: this.$route.query.fromName || 'home'
           })
         }
       } catch (e) {

@@ -64,16 +64,32 @@ const router = new VueRouter({
       name: 'trade',
       path: '/trade',
       component: Trade,
+      meta: {
+        auth: true
+      },
+      beforeEnter: (to, from, next) => {
+        if (from.name === 'shopCart') {
+          next()
+        } else {
+          next(false)
+        }
+      }
     },
     {
       name: 'pay',
       path: '/pay',
       component: Pay,
+      meta: {
+        auth: true
+      }
     },
     {
       name: 'paySuccess',
       path: '/paySuccess',
       component: PaySuccess,
+      meta: {
+        auth: true
+      },
     },
     {
       name: 'center',
@@ -85,11 +101,17 @@ const router = new VueRouter({
           name: 'theOrder',
           path: 'theOrder',
           component: TheOrder,
+          meta: {
+            auth: true
+          },
         },
         {
           name: 'groupOrder',
           path: 'groupOrder',
           component: GroupOrder,
+          meta: {
+            auth: true
+          },
         },
       ]
     },
@@ -119,7 +141,12 @@ router.beforeEach((to, from, next) => {
 
     }
   } else {
-    next()
+    if (to.meta.auth) {
+      next({name: 'login', query: {fromName: to.name}})
+    } else {
+      next()
+    }
+
   }
 
 })
