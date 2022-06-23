@@ -86,7 +86,7 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <a class="subBtn" :class="{disable:!selectAddress}" @click="submitOrder">提交订单</a>
+      <a class="subBtn" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
